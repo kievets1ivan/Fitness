@@ -4,34 +4,19 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class AbonementPriceDynamic
+    public class AbonementPriceDynamic :
+        IInsertable<AbonementPriceDynamicDetails>,
+        IUpdatable<AbonementPriceDynamicDetails>,
+        IGettableDetailsById<AbonementPriceDynamicDetails>,
+        IDeletable
     {
-        #region Details
 
-        public class Details
-        {
-            #region Constructor
-
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int AbonementId = 0;
-
-            public double Price = 0;
-            public DateTime DateStart = DateTime.MinValue;
-            public DateTime DateFinish = DateTime.MinValue;
-
-            #endregion
-        }
-
-        #endregion
+        AbonementPriceDynamicDetails det = new AbonementPriceDynamicDetails();
 
         #region Get List
 
@@ -73,7 +58,7 @@ namespace FitnessProject.DBLayer
         
         #region Insert
 
-        public static void Insert(DBLayer.AbonementPriceDynamic.Details det)
+        public void Insert(AbonementPriceDynamicDetails det)
         {
             string sql = "INSERT INTO AbonementPriceDynamic (AbonementId, Price, [DateStart], [DateFinish]) ";
             sql += " VALUES (" + det.AbonementId.ToString() + ", " + det.Price.ToString().Replace(",", ".") + ", '" + det.DateStart.ToString("yyyyMMdd") + "', '" + det.DateFinish.ToString("yyyyMMdd") + "')";
@@ -85,7 +70,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.AbonementPriceDynamic.Details det)
+        public void Update(AbonementPriceDynamicDetails det)
         {
             ZFort.DB.Execute.ExecuteString_void("UPDATE AbonementPriceDynamic SET [AbonementId] = " + det.AbonementId.ToString() + " WHERE [Id] = " + det.Id.ToString());
 
@@ -100,7 +85,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("DELETE FROM AbonementPriceDynamic WHERE [Id] = " + id.ToString());
         }
@@ -109,7 +94,7 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.AbonementPriceDynamic.Details GetDetails(int id)
+        public AbonementPriceDynamicDetails GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM AbonementPriceDynamic WHERE [Id] = " + id.ToString());
 

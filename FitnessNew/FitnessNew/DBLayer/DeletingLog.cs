@@ -9,10 +9,12 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 //using System.Xml.Linq;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class DeletingLog
+    public class DeletingLog : IInsertable<DeletingLogDetails>
     {
         #region Constructor
 
@@ -25,32 +27,11 @@ namespace FitnessProject.DBLayer
 
         #endregion
 
-        #region Details
-
-        public class DeletingLog_Details
-        {
-            #region Constructor
-
-            public DeletingLog_Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int Type = 0;
-            public string Name = "";
-            public DateTime Date = DateTime.MinValue;
-            public string User = "";
-
-            #endregion
-        }
-
-        #endregion
+        DeletingLogDetails det = new DeletingLogDetails();
 
         #region Insert
 
-        public static void Insert(DBLayer.DeletingLog.DeletingLog_Details det)
+        public void Insert(DeletingLogDetails det)
         {
             string sql = "INSERT INTO DeletingLog (Type, [Name], [Date], [User]) ";
             sql += " VALUES (" + det.Type.ToString() + ", '" + det.Name.ToString() + "', '" + det.Date.ToString("yyyyMMdd") + "', '" + det.User + "')";

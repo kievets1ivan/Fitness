@@ -4,84 +4,18 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class Visits
+    public class Visits :
+        IInsertable<VisitsWideDetails>,
+        IUpdatable<VisitsWideDetails>,
+        IGettableDetailsById<VisitsWideDetails>,
+        IDeletable
     {
-        #region Details
-
-        public class Visits_Details
-        {
-            #region Constructor
-
-            public Visits_Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int ClientId = 0;
-            public DateTime Date = DateTime.MinValue;
-            public string Time = "";
-            public int Type = 0;
-
-            public int Number = 0;
-            public int BoxId = 0;
-
-            public string TimeOff = "";
-            public bool WithoutKey = false;
-
-            public int CoachId = 0;
-
-            public bool IsSubstitution = false;
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Visits_WideDetails
-
-        public class Visits_WideDetails
-        {
-            #region Constructor
-
-            public Visits_WideDetails() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int ClientId = 0;
-            public string ClientName = "";
-            public DateTime DateVisit = DateTime.MinValue;
-
-            public DateTime TimeOnVisit = DateTime.MinValue;
-            public DateTime TimeOffVisit = DateTime.MinValue;
-
-            public DateTime Date = DateTime.MinValue;
-            public string Time = "";
-            public int Type = 0;
-
-            public int Number = 0;
-            public int BoxId = 0;
-
-            public string TimeOff = "";
-            public bool WithoutKey = false;
-
-            public string AbonementName = "";
-            public string BoxType = "";
-
-            public int CoachId = 0;
-            public string CoachName = "";
-
-            #endregion
-        }
-
-        #endregion
+        VisitsWideDetails det = new VisitsWideDetails();
 
         #region Get List
 
@@ -272,7 +206,7 @@ namespace FitnessProject.DBLayer
        
         #region Insert
 
-        public static void Insert(DBLayer.Visits.Visits_Details det)
+        public void Insert(VisitsWideDetails det)
         {
             string sql = "INSERT INTO Visits (ClientId, [Date], [Time], [Type], BoxId, WithoutKey, TimeOff, CoachId, IsSubstitution) ";
             sql += " VALUES (" + det.ClientId.ToString() + ", '" + det.Date.Date.ToString("yyyyMMdd") + "', '" + det.Time + "', " + det.Type.ToString() + ", " + det.BoxId.ToString() + ", " + Convert.ToInt32(det.WithoutKey).ToString() + ", '', " + det.CoachId.ToString() + ", " + Convert.ToInt32(det.IsSubstitution) + ")";
@@ -284,7 +218,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.Visits.Visits_Details det)
+        public void Update(VisitsWideDetails det)
         {
             ZFort.DB.Execute.ExecuteString_void("UPDATE Visits SET [ClientId] = " + det.ClientId.ToString() + " WHERE [Id] = " + det.Id.ToString());
 
@@ -303,7 +237,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("DELETE FROM Visits WHERE [Id] = " + id.ToString());
         }
@@ -312,11 +246,11 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.Visits.Visits_Details GetDetails(int id)
+        public VisitsWideDetails GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM Visits WHERE [Id] = " + id.ToString());
 
-            DBLayer.Visits.Visits_Details det = new Visits_Details();
+            VisitsWideDetails det = new VisitsWideDetails();
 
             if (!dr.IsNull("Id"))
                 det.Id = Convert.ToInt32(dr["Id"]);

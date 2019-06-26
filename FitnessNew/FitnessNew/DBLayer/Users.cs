@@ -4,71 +4,20 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class Users
+    public class Users :
+        IInsertable<UsersDetails>,
+        IUpdatable<UsersDetails>,
+        IGettableDetailsById<UsersDetails>,
+        IDeletable
     {
-        #region Details
+        UsersDetails det = new UsersDetails();
 
-        public class Details
-        {
-            #region Constructor
-
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public string FIO = "";
-            public string JobTitle = "";
-            public string Login = "";
-            public string Password = "";
-            public string Barcode = "";
-            public bool IsAdmin = false;
-
-            #endregion
-        }
-
-        #endregion
-
-        #region UserIncome_Details
-
-        public class UserIncome_Details
-        {
-            #region Constructor
-
-            public UserIncome_Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public string User = "";
-            public int UserId = 0;
-            public double Abonements = 0;
-            public double Services = 0;
-            public double Goods = 0;
-            public double Fitness = 0;
-            public double Massage = 0;
-
-            public double Constant = 0;
-            public double PercentForClients = 0;
-            public double PercentForSales = 0;
-            public double PercentForService = 0;
-
-            public double ClientIncome = 0;
-            public double GoodIncome = 0;
-            public double ServiceIncome = 0;
-            public double FitnessIncome = 0;
-            public double MassageIncome = 0;
-
-            #endregion
-        }
-
-        #endregion
+        UserIncomeDetails incomeDet = new UserIncomeDetails();
 
         #region Get List
 
@@ -122,7 +71,7 @@ namespace FitnessProject.DBLayer
 
         #region Insert
 
-        public static void Insert(DBLayer.Users.Details det)
+        public void Insert(UsersDetails det)
         {
             string sql = "INSERT INTO Users (FIO, JobTitle, Login, Password, Barcode, IsAdmin) ";
             sql += " VALUES ('" + det.FIO + "', '" + det.JobTitle + "', '" + det.Login + "', '" + det.Password + "', '" + det.Barcode + "', " + Convert.ToInt32(det.IsAdmin).ToString() + ")";
@@ -134,7 +83,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.Users.Details det)
+        public void Update(UsersDetails det)
         {
 
             ZFort.DB.Execute.ExecuteString_void("UPDATE Users SET [FIO] = '" + det.FIO + "' WHERE [Id] = " + det.Id.ToString());
@@ -154,7 +103,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("DELETE FROM Users WHERE [Id] = " + id.ToString());
         }
@@ -163,11 +112,11 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.Users.Details GetDetails(int id)
+        public UsersDetails GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM Users WHERE [Id] = " + id.ToString());
 
-            DBLayer.Users.Details det = new Details();
+            UsersDetails det = new UsersDetails();
 
             if (!dr.IsNull("Id"))
                 det.Id = Convert.ToInt32(dr["Id"]);

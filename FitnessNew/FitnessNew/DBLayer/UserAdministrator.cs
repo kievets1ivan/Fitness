@@ -4,55 +4,16 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class UserAdministrator
+    public class UserAdministrator :
+        IInsertable<UserAdministratorWideDetails>,
+        IDeletable
     {
-        #region Details
-
-        public class UserAdministrator_Details
-        {
-            #region Constructor
-
-            public UserAdministrator_Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int AdministratorId = 0;
-            public int UserId = 0;
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Details
-
-        public class UserAdministrator_WideDetails
-        {
-            #region Constructor
-
-            public UserAdministrator_WideDetails() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int AdministratorId = 0;
-            public int UserId = 0;
-
-            public string AdministratorName = "";
-            public string UserName = "";
-
-            #endregion
-        }
-
-        #endregion
+        UserAdministratorWideDetails det = new UserAdministratorWideDetails();
 
         #region Get List
 
@@ -94,7 +55,7 @@ namespace FitnessProject.DBLayer
 
         #region Insert
 
-        public static void Insert(DBLayer.UserAdministrator.UserAdministrator_Details det)
+        public void Insert(UserAdministratorWideDetails det)
         {
             string sql = "INSERT INTO UserAdministrator (UserId, AdministratorId) ";
             sql += " VALUES (" + det.UserId.ToString() + ", " + det.AdministratorId.ToString() + ")";
@@ -106,7 +67,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("DELETE FROM UserAdministrator WHERE [Id] = " + id.ToString());
         }

@@ -4,113 +4,22 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class Products
+    public class Products :
+        IInsertable<ProductsWideDetails>,
+        IUpdatable<ProductsWideDetails>,
+        IGettableDetailsById<ProductsWideDetails>,
+        IDeletable
     {
-        #region Details
+        ProductsWideDetails det = new ProductsWideDetails();
 
-        public class Details
-        {
-            #region Constructor
+        MovementDetails movDet = new MovementDetails();
 
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int GroupId = 0;
-            public int DimensionId = 0;
-            public string Name = "";
-            public string Barcode = "";
-            public string Description = "";
-
-            public double Price = 0;
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Details
-
-        public class Products_WideDetails
-        {
-            #region Constructor
-
-            public Products_WideDetails() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Sold = 0;
-            public int Id = 0;
-            public int GroupId = 0;
-            public int DimensionId = 0;
-            public string Name = "";
-            public string Barcode = "";
-            public string Description = "";
-
-            public string GroupName = "";
-            public string DimensionName = "";
-
-            public double Price = 0;
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Details
-
-        public class MovementDetails
-        {
-            #region Constructor
-
-            public MovementDetails() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Arrived = 0;
-            public int Dispatched = 0;
-            public DateTime Date = DateTime.MinValue;
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Details
-
-        public class Rest_Details
-        {
-            #region Constructor
-
-            public Rest_Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public string ProductName = "";
-            public string DimensionName = "";
-            public string GroupName = "";
-            public double Rest = 0;
-
-            public double Price = 0;
-
-            public int Id = 0;
-
-            #endregion
-        }
-
-        #endregion
+        RestDetails restDet = new RestDetails();
 
         #region Get List
 
@@ -302,7 +211,7 @@ namespace FitnessProject.DBLayer
 
         #region Insert
 
-        public static void Insert(DBLayer.Products.Details det)
+        public  void Insert(ProductsWideDetails det)
         {
             string sql = "INSERT INTO Products (GroupId, DimensionId, [Name], Barcode, Description, Price) ";
             sql += " VALUES (" + det.GroupId.ToString() + ", " + det.DimensionId.ToString() + ", '" + det.Name + "', '" + det.Barcode + "', '" + det.Description + "', " + det.Price.ToString().Replace(",", ".") + ")";
@@ -314,7 +223,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.Products.Details det)
+        public void Update(ProductsWideDetails det)
         {
 
             ZFort.DB.Execute.ExecuteString_void("UPDATE Products SET [GroupId] = " + det.GroupId.ToString() + " WHERE [Id] = " + det.Id.ToString());
@@ -334,7 +243,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public  void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("DELETE FROM Products WHERE [Id] = " + id.ToString());
         }
@@ -343,11 +252,11 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.Products.Details GetDetails(int id)
+        public ProductsWideDetails GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM Products WHERE [Id] = " + id.ToString());
 
-            DBLayer.Products.Details det = new Details();
+            ProductsWideDetails det = new ProductsWideDetails();
 
             if (!dr.IsNull("Id"))
                 det.Id = Convert.ToInt32(dr["Id"]);

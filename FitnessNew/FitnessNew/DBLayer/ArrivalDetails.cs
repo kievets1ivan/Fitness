@@ -4,73 +4,18 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class ArrivalDetails
+    public class ArrivalDetails :
+        IInsertable<ArrivalElementWideDetails>,
+        IUpdatable<ArrivalElementWideDetails>,
+        IGettableDetailsById<ArrivalElementWideDetails>,
+        IDeletable
     {
-        #region Details
-
-        public class Details
-        {
-            #region Constructor
-
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int ArrivalId = 0;
-            public int ProductId = 0;
-            public double Price = 0;
-            public double Quantity = 0;
-
-            public DateTime Date = DateTime.MinValue;
-            public int SupplierId = 0;
-
-            public int ChargeId = 0;
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Details
-
-        public class ArrivalDetails_WideDetails
-        {
-            #region Constructor
-
-            public ArrivalDetails_WideDetails() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int ArrivalId = 0;
-            public string ArrivalNumber = "";
-
-            public int ProductId = 0;
-            public string ProductName = "";
-
-            public double Price = 0;
-            public double Quantity = 0;
-
-            public string GroupName = "";
-            public string DimensionName = "";
-
-            public DateTime Date = DateTime.MinValue;
-            public int SupplierId = 0;
-
-            public string SupplierName = "";
-
-            #endregion
-        }
-
-        #endregion
+        ArrivalElementWideDetails det = new ArrivalElementWideDetails();
 
         #region Get List
 
@@ -133,7 +78,7 @@ namespace FitnessProject.DBLayer
 
         #region Insert
 
-        public static int Insert(DBLayer.ArrivalDetails.Details det)
+        public int Insert(ArrivalElementWideDetails det)
         {
             string sql = "INSERT INTO ArrivalDetails (ProductId, Quantity, Price, [Date], SupplierId) ";
             sql += " VALUES (" + det.ProductId.ToString() + ", " + det.Quantity.ToString().Replace(",", ".") + ", " + det.Price.ToString().Replace(",", ".") + ", '" + det.Date.ToString("yyyyMMdd") + "', " + det.SupplierId.ToString() + ")";
@@ -149,7 +94,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.ArrivalDetails.Details det)
+        public void Update(ArrivalElementWideDetails det)
         {
             ZFort.DB.Execute.ExecuteString_void("UPDATE ArrivalDetails SET [ProductId] = " + det.ProductId.ToString() + " WHERE [Id] = " + det.Id.ToString());
 
@@ -168,7 +113,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("DELETE FROM ArrivalDetails WHERE [Id] = " + id.ToString());
         }
@@ -177,11 +122,11 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.ArrivalDetails.Details GetDetails(int id)
+        public ArrivalElementWideDetails GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM ArrivalDetails WHERE [Id] = " + id.ToString());
 
-            DBLayer.ArrivalDetails.Details det = new Details();
+            ArrivalElementWideDetails det = new ArrivalElementWideDetails();
 
             if (!dr.IsNull("Id"))
                 det.Id = Convert.ToInt32(dr["Id"]);

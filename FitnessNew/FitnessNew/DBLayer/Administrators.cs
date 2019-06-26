@@ -4,31 +4,18 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class Administrators
+    public class Administrators :
+        IInsertable<AdministratorsDetails>,
+        IUpdatable<AdministratorsDetails>,
+        IGettableDetailsById<AdministratorsDetails>,
+        IDeletable
     {
-        #region Details
-
-        public class Details
-        {
-            #region Constructor
-
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public string FIO = "";
-            public bool IsTired = false;
-
-            #endregion
-        }
-
-        #endregion
+        AdministratorsDetails det = new AdministratorsDetails();
 
         #region Get List
 
@@ -102,7 +89,7 @@ namespace FitnessProject.DBLayer
 
         #region Insert
 
-        public static void Insert(DBLayer.Administrators.Details det)
+        public void Insert(AdministratorsDetails det)
         {
             ZFort.DB.Execute.ExecuteString_void("INSERT INTO Administrators ([FIO], IsTired) VALUES ('" + det.FIO + "', " + Convert.ToInt32(det.IsTired).ToString() + ")");
         }
@@ -111,7 +98,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.Administrators.Details det)
+        public void Update(AdministratorsDetails det)
         {
             ZFort.DB.Execute.ExecuteString_void("UPDATE Administrators SET [FIO] = '" + det.FIO + "' WHERE [Id] = " + det.Id.ToString());
 
@@ -122,7 +109,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("DELETE FROM Administrators WHERE [Id] = " + id.ToString());
         }
@@ -131,11 +118,11 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.Administrators.Details GetDetails(int id)
+        public AdministratorsDetails GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM Administrators WHERE [Id] = " + id.ToString());
 
-            DBLayer.Administrators.Details det = new Details();
+            AdministratorsDetails det = new AdministratorsDetails();
 
             if (!dr.IsNull("Id"))
                 det.Id = Convert.ToInt32(dr["Id"]);

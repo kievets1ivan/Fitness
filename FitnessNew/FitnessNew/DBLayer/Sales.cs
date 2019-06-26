@@ -4,74 +4,18 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class Sales
+    public class Sales :
+        IInsertable<SalesWideDetails>,
+        IUpdatable<SalesWideDetails>,
+        IGettableDetailsById<SalesWideDetails>,
+        IDeletable
     {
-        #region Details
-
-        public class Details
-        {
-            #region Constructor
-
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int ProductId = 0;
-            public int ClientId = 0;
-            public int UserId = 0;
-            public DateTime Date = DateTime.MinValue;
-            public string Time = "";
-            public int Quantity = 0;
-
-            public bool IsDeleted = false;
-            public DateTime DeleteDate = DateTime.MinValue;
-            public string DeleteReason = "";
-
-            #endregion
-        }
-
-        #endregion
-
-        #region WideDetails
-
-        public class Sales_WideDetails
-        {
-            #region Constructor
-
-            public Sales_WideDetails() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int ProductId = 0;
-            public int UserId = 0;
-            public DateTime Date = DateTime.MinValue;
-            public string Time = "";
-            public int Quantity = 0;
-
-            public string UserName = "";
-            public string DimensionName = "";
-            public string ProductName = "";
-            public string ProductGroupName = "";
-
-            public double Cost = 0;
-
-            public bool IsDeleted = false;
-            public DateTime DeleteDate = DateTime.MinValue;
-            public string DeleteReason = "";
-
-            #endregion
-        }
-
-        #endregion
+        SalesWideDetails det = new SalesWideDetails();
 
         #region Get List
 
@@ -144,7 +88,7 @@ namespace FitnessProject.DBLayer
 
         #region Insert
 
-        public static void Insert(DBLayer.Sales.Details det)
+        public void Insert(SalesWideDetails det)
         {
             string sql = "INSERT INTO Sales (ProductId, UserId, [Date], [Time], Quantity, IsDeleted) ";
             sql += " VALUES (" + det.ProductId.ToString() + ", " + det.UserId.ToString() + ", '" + det.Date.ToString("yyyyMMdd") + "', '" + det.Time + "', " + det.Quantity.ToString() + ", 0)";
@@ -156,7 +100,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.Sales.Details det)
+        public void Update(SalesWideDetails det)
         {
             ZFort.DB.Execute.ExecuteString_void("UPDATE Sales SET [ProductId] = " + det.ProductId.ToString() + " WHERE [Id] = " + det.Id.ToString());
 
@@ -173,7 +117,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("DELETE FROM Sales WHERE [Id] = " + id.ToString());
         }
@@ -182,11 +126,11 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.Sales.Details GetDetails(int id)
+        public SalesWideDetails GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM Sales WHERE [Id] = " + id.ToString());
 
-            DBLayer.Sales.Details det = new Details();
+            SalesWideDetails det = new SalesWideDetails();
 
             if (!dr.IsNull("Id"))
                 det.Id = Convert.ToInt32(dr["Id"]);

@@ -4,62 +4,18 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class Coaches
+    public class Coaches :
+        IInsertable<CoachesWideDetails>,
+        IUpdatable<CoachesWideDetails>,
+        IGettableDetailsById<CoachesWideDetails>,
+        IDeletable
     {
-        #region Details
-
-        public class Details
-        {
-            #region Constructor
-
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public string Name = "";
-            public string Phone = string.Empty;
-            public DateTime HireDate = DateTime.MinValue;
-            public DateTime FireDate = DateTime.MinValue;
-
-            public int Sex = -1;
-            public int Type = -1;
-            public DateTime BirthDate = DateTime.MinValue;
-
-
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Details
-
-        public class VisitsReportDetails
-        {
-            #region Constructor
-
-            public VisitsReportDetails() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public string Name = "";
-            public int Abonements = 0;
-            public int Single = 0;
-            public int Substitutions = 0;
-
-            #endregion
-        }
-
-        #endregion
+        CoachesWideDetails det = new CoachesWideDetails();
 
         #region Get List
 
@@ -179,7 +135,7 @@ namespace FitnessProject.DBLayer
 
         #region Insert
 
-        public static int Insert(DBLayer.Coaches.Details det)
+        public int Insert(CoachesWideDetails det)
         {
             if (det.FireDate != DateTime.MinValue)
             {
@@ -197,7 +153,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.Coaches.Details det)
+        public void Update(CoachesWideDetails det)
         {
 
             ZFort.DB.Execute.ExecuteString_void("UPDATE Coaches SET [Name] = '" + det.Name + "' WHERE [Id] = " + det.Id.ToString());
@@ -226,7 +182,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("DELETE FROM Coaches WHERE [Id] = " + id.ToString());
         }
@@ -244,11 +200,11 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.Coaches.Details GetDetails(int id)
+        public CoachesWideDetails GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM Coaches WHERE [Id] = " + id.ToString());
 
-            DBLayer.Coaches.Details det = new Details();
+            CoachesWideDetails det = new CoachesWideDetails();
             if ((dr != null))
             {
                 if (!dr.IsNull("Id"))

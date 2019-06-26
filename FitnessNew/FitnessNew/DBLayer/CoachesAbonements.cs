@@ -4,55 +4,16 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class CoachesAbonements
+    public class CoachesAbonements :
+        IInsertable<CoachesAbonementsWideDetails>,
+        IDeletable
     {
-        #region Details
-
-        public class CoachesAbonements_Details
-        {
-            #region Constructor
-
-            public CoachesAbonements_Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int AbonementId = 0;
-            public int CoachId = 0;
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Details
-
-        public class CoachesAbonements_WideDetails
-        {
-            #region Constructor
-
-            public CoachesAbonements_WideDetails() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int AbonementId = 0;
-            public int CoachId = 0;
-
-            public string AbonementName = "";
-            public string CoachName = "";
-
-            #endregion
-        }
-
-        #endregion
+        CoachesAbonementsWideDetails det = new CoachesAbonementsWideDetails();
 
         #region Get List
 
@@ -134,7 +95,7 @@ namespace FitnessProject.DBLayer
 
         #region Insert
 
-        public static void Insert(DBLayer.CoachesAbonements.CoachesAbonements_Details det)
+        public void Insert(CoachesAbonementsWideDetails det)
         {
             ZFort.DB.Execute.ExecuteString_void("INSERT INTO CoachesAbonements (AbonementId, CoachId) VALUES (" + det.AbonementId.ToString() + ", " + det.CoachId.ToString() + ")");
         }
@@ -143,7 +104,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("DELETE FROM CoachesAbonements WHERE [Id] = " + id.ToString());
         }

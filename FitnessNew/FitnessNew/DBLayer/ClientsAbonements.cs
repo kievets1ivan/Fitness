@@ -4,73 +4,18 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class ClientsAbonements
+    public class ClientsAbonements :
+        IInsertable<ClientsAbonementsWideDetails>,
+        IUpdatable<ClientsAbonementsWideDetails>,
+        IGettableDetailsById<ClientsAbonementsWideDetails>,
+        IDeletable
     {
-        #region Details
-
-        public class Details
-        {
-            #region Constructor
-
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int ClientId = 0;
-            public int AbonementId = 0;
-            public DateTime DateStart = DateTime.MinValue;
-            public DateTime DateFinish = DateTime.MinValue;
-
-            public int VisitsCount = -1;
-            public int AdditionalCount = -1;
-
-            public int CoachId = 0;
-            public string Weekdays = string.Empty;
-            public string Time = string.Empty;
-
-            #endregion
-        }
-
-        #endregion
-
-        #region WideDetails
-
-        public class ClientsAbonements_WideDetails
-        {
-            #region Constructor
-
-            public ClientsAbonements_WideDetails() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int ClientId = 0;
-            public string FIO = "";
-            public string Name = "";
-            public int AbonementId = 0;
-            public DateTime DateStart = DateTime.MinValue;
-            public DateTime DateFinish = DateTime.MinValue;
-
-            public int VisitsCount = -1;
-            public int AdditionalCount = -1;
-
-            public int CoachId = 0;
-            public string Weekdays = string.Empty;
-            public string CoachName = string.Empty;
-            public string Time = string.Empty;
-
-            #endregion
-        }
-
-        #endregion
+        ClientsAbonementsWideDetails det = new ClientsAbonementsWideDetails();
 
         #region Get List
 
@@ -142,7 +87,7 @@ namespace FitnessProject.DBLayer
 
         #region Insert
 
-        public static int Insert(DBLayer.ClientsAbonements.Details det)
+        public int Insert(ClientsAbonementsWideDetails det)
         {
             var adet = DBLayer.Clients.GetCurrentAbonement(det.ClientId);
             string actual = "0";
@@ -173,7 +118,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.ClientsAbonements.Details det)
+        public void Update(ClientsAbonementsWideDetails det)
         {
             ZFort.DB.Execute.ExecuteString_void("UPDATE ClientsAbonements SET [ClientId] = " + det.ClientId.ToString() + " WHERE [Id] = " + det.Id.ToString());
 
@@ -238,15 +183,15 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             string user = ((DBLayer.Users.Details)AppDomain.CurrentDomain.GetData("User")).FIO;
 
-            DBLayer.ClientsAbonements.Details det = DBLayer.ClientsAbonements.GetDetails(id);
+            ClientsAbonementsWideDetails det = GetDetailsById(id);
 
-            DBLayer.Clients.Details cDet = DBLayer.Clients.GetDetails(det.ClientId);
+            ClientsWideDetails cDet = DBLayer.Clients.GetDetailsById(det.ClientId);// ?
 
-            DBLayer.Abonements.Details aDet = DBLayer.Abonements.GetDetails(det.AbonementId);
+            AbonementsWideDetails aDet = DBLayer.Abonements.GetDetailsById(det.AbonementId);// ?
 
             DBLayer.DeletingLog.DeletingLog_Details dlDet = new DeletingLog.DeletingLog_Details();
 
@@ -264,11 +209,11 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.ClientsAbonements.Details GetDetails(int id)
+        public ClientsAbonementsWideDetails GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM ClientsAbonements WHERE [Id] = " + id.ToString());
 
-            DBLayer.ClientsAbonements.Details det = new Details();
+            ClientsAbonementsWideDetails det = new ClientsAbonementsWideDetails();
 
             if (!dr.IsNull("Id"))
                 det.Id = Convert.ToInt32(dr["Id"]);

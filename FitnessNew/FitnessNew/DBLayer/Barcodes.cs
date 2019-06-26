@@ -4,29 +4,14 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class Barcodes
+    public class Barcodes : IInsertable<DetailsWithName>
     {
-        #region Details
-
-        public class Details
-        {
-            #region Constructor
-
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public string Name = "";
-
-            #endregion
-        }
-
-        #endregion
+        DetailsWithName det = new DetailsWithName();
 
         #region Get List
 
@@ -64,7 +49,7 @@ namespace FitnessProject.DBLayer
 
         #region Insert
 
-        public static void Insert(DBLayer.Barcodes.Details det)
+        public void Insert(DetailsWithName det)
         {
             ZFort.DB.Execute.ExecuteString_void("INSERT INTO Barcodes (Barcode) VALUES ('" + det.Name + "')");
         }

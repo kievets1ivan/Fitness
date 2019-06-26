@@ -4,63 +4,18 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class Charges
+    public class Charges :
+        IInsertable<ChargesWideDetails>,
+        IUpdatable<ChargesWideDetails>,
+        IGettableDetailsById<ChargesWideDetails>,
+        IDeletable
     {
-        #region Details
-
-        public class Details
-        {
-            #region Constructor
-
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int GroupId = 0;
-            public string Name = "";
-            public double Summ = 0;
-            public DateTime Date = DateTime.MinValue;
-            public int AdminstratorId = 0;
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Details
-
-        public class Charges_WideDetails
-        {
-            #region Constructor
-
-            public Charges_WideDetails() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int GroupId = 0;
-            public string Name = "";
-            public double Summ = 0;
-            public DateTime Date = DateTime.MinValue;
-
-            public string GroupName = "";
-
-            public int AdminstratorId = 0;
-
-            public string FIO = "";
-
-            #endregion
-        }
-
-        #endregion
+        ChargesWideDetails det = new ChargesWideDetails();
 
         #region Get List
 
@@ -108,7 +63,7 @@ namespace FitnessProject.DBLayer
 
         #region Insert
 
-        public static int Insert(DBLayer.Charges.Details det)
+        public int Insert(ChargesWideDetails det)
         {
             string sql = "INSERT INTO Charges (GroupId, [Name], Summ, [Date], AdministratorId) ";
             sql += " VALUES (" + det.GroupId.ToString() + ", '" + det.Name + "', " + det.Summ.ToString().Replace(",", ".") + ", '" + det.Date.ToString("yyyyMMdd") + "', " + det.AdminstratorId.ToString() + ")";
@@ -124,7 +79,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.Charges.Details det)
+        public void Update(ChargesWideDetails det)
         {
             ZFort.DB.Execute.ExecuteString_void("UPDATE Charges SET [GroupId] = " + det.GroupId.ToString() + " WHERE [Id] = " + det.Id.ToString());
 
@@ -139,11 +94,11 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             string user = ((DBLayer.Users.Details)AppDomain.CurrentDomain.GetData("User")).FIO;
 
-            DBLayer.Charges.Details cDet = DBLayer.Charges.GetDetails(id);
+            ChargesWideDetails cDet = GetDetailsById(id);
 
             DBLayer.DeletingLog.DeletingLog_Details det = new DeletingLog.DeletingLog_Details();
 
@@ -161,11 +116,11 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.Charges.Details GetDetails(int id)
+        public ChargesWideDetails GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM Charges WHERE [Id] = " + id.ToString());
 
-            DBLayer.Charges.Details det = new Details();
+            ChargesWideDetails det = new ChargesWideDetails();
 
             if (!dr.IsNull("Id"))
                 det.Id = Convert.ToInt32(dr["Id"]);

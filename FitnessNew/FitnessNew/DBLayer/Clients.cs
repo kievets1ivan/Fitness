@@ -4,87 +4,18 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class Clients
+    public class Clients :
+        IInsertable<ClientsWideDetails>,
+        IUpdatable<ClientsWideDetails>,
+        IGettableDetailsById<ClientsWideDetails>,
+        IDeletable
     {
-        #region Details
-
-        public class Details
-        {
-            #region Constructor
-
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-
-            public int TypeId = 0;
-            public int DocumentId = 0;
-            public int SourceId = 0;
-            public string FIO = "";
-            public string Barcode = "";
-            public DateTime RegisterDate = DateTime.MinValue;
-
-            public string DocumentNumber = "";
-            public DateTime BirthDate = DateTime.MinValue;
-
-            public string Phone = "";
-
-            public int Sex = 0;
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Details
-
-        public class Clients_WideDetails
-        {
-            #region Constructor
-
-            public Clients_WideDetails() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int TypeId = 0;
-            public int DocumentId = 0;
-            public int SourceId = 0;
-            public string FIO = "";
-            public string Barcode = "";
-            public DateTime RegisterDate = DateTime.MinValue;
-
-            public string DocumentNumber = "";
-            public DateTime BirthDate = DateTime.MinValue;
-
-            public string TypeName = "";
-            public string DocumentName = "";
-            public string SourceName = "";
-
-            public string Phone = "";
-
-            public string AbonementName = "";
-            public DateTime FinishDate = DateTime.MinValue;
-
-            public int VisitsCount = -1;
-            public int AVisitsCount = -1;
-
-            public int Sex = 0;
-
-            public string CoachName = string.Empty;
-
-            #endregion
-        }
-
-        #endregion
+        ClientsWideDetails det = new ClientsWideDetails();
 
         #region Get List
 
@@ -538,7 +469,7 @@ namespace FitnessProject.DBLayer
 
         #region Insert
 
-        public static int Insert(DBLayer.Clients.Details det)
+        public int Insert(ClientsWideDetails det)
         {
             string sql = "INSERT INTO Clients (DocumentId, TypeId, SourceId, FIO, Barcode, RegisterDate, BirthDate, DocumentNumber, Phone, Sex) ";
             sql += " VALUES (" + det.DocumentId.ToString() + ", " + det.TypeId.ToString() + ", " + det.SourceId.ToString() + ", '" + det.FIO + "', '" + det.Barcode + "', '" + det.RegisterDate.ToString("yyyyMMdd") + "', '" + det.BirthDate.ToString("yyyyMMdd") + "', '" + det.DocumentNumber + "', '" + det.Phone + "', " + det.Sex.ToString() + ")";
@@ -554,7 +485,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.Clients.Details det)
+        public void Update(ClientsWideDetails det)
         {
             ZFort.DB.Execute.ExecuteString_void("UPDATE Clients SET [DocumentId] = " + det.DocumentId.ToString() + " WHERE [Id] = " + det.Id.ToString());
 
@@ -581,7 +512,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("DELETE FROM Clients WHERE [Id] = " + id.ToString());
         }
@@ -590,11 +521,11 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.Clients.Details GetDetails(int id)
+        public ClientsWideDetails GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM Clients WHERE [Id] = " + id.ToString());
 
-            DBLayer.Clients.Details det = new Details();
+            ClientsWideDetails det = new ClientsWideDetails();
 
             if (!dr.IsNull("Id"))
                 det.Id = Convert.ToInt32(dr["Id"]);

@@ -4,57 +4,18 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class Services
+    public class Services :
+        IInsertable<ServicesWideDetails>,
+        IUpdatable<ServicesWideDetails>,
+        IGettableDetailsById<ServicesWideDetails>,
+        IDeletable
     {
-        #region Details
-
-        public class Details
-        {
-            #region Constructor
-
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int DimensionId = 0;
-            public string Name = "";
-            public double CostPerUnit = 0;
-            public int Type = 0;
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Details
-
-        public class Services_WideDetails
-        {
-            #region Constructor
-
-            public Services_WideDetails() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int DimensionId = 0;
-            public string Name = "";
-            public double CostPerUnit = 0;
-            public string DimensionName = "";
-            public int Type = 0;
-
-            #endregion
-        }
-
-        #endregion
+        ServicesWideDetails det = new ServicesWideDetails();
 
         #region Get List
 
@@ -99,7 +60,7 @@ namespace FitnessProject.DBLayer
 
         #region Insert
 
-        public static int Insert(DBLayer.Services.Details det)
+        public int Insert(ServicesWideDetails det)
         {
             string sql = "INSERT INTO Services (DimensionId, [Name], CostPerUnit, [Type]) ";
             sql += " VALUES (" + det.DimensionId.ToString() + ", '" + det.Name + "', " + det.CostPerUnit.ToString().Replace(",", ".") + ", " + det.Type.ToString() + ")";
@@ -113,7 +74,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.Services.Details det)
+        public void Update(ServicesWideDetails det)
         {
 
             ZFort.DB.Execute.ExecuteString_void("UPDATE Services SET [DimensionId] = " + det.DimensionId.ToString() + " WHERE [Id] = " + det.Id.ToString());
@@ -129,7 +90,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("DELETE FROM Services WHERE [Id] = " + id.ToString());
         }
@@ -138,11 +99,11 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.Services.Details GetDetails(int id)
+        public ServicesWideDetails GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM Services WHERE [Id] = " + id.ToString());
 
-            DBLayer.Services.Details det = new Details();
+            ServicesWideDetails det = new ServicesWideDetails();
 
             if (!dr.IsNull("Id"))
                 det.Id = Convert.ToInt32(dr["Id"]);

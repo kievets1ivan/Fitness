@@ -4,34 +4,18 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class ServicePriceDynamic
+    public class ServicePriceDynamic :
+        IInsertable<ServicePriceDynamicDetails>,
+        IUpdatable<ServicePriceDynamicDetails>,
+        IGettableDetailsById<ServicePriceDynamicDetails>,
+        IDeletable
     {
-        #region Details
-
-        public class Details
-        {
-            #region Constructor
-
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int ServiceId = 0;
-
-            public double Price = 0;
-            public DateTime DateStart = DateTime.MinValue;
-            public DateTime DateFinish = DateTime.MinValue;
-
-            #endregion
-        }
-
-        #endregion
+        ServicePriceDynamicDetails det = new ServicePriceDynamicDetails();
 
         #region Get List
 
@@ -72,7 +56,7 @@ namespace FitnessProject.DBLayer
         
         #region Insert
 
-        public static void Insert(DBLayer.ServicePriceDynamic.Details det)
+        public void Insert(ServicePriceDynamicDetails det)
         {
             string sql = "INSERT INTO ServicePriceDynamic (ServiceId, Price, [DateStart], [DateFinish]) ";
             sql += " VALUES (" + det.ServiceId.ToString() + ", " + det.Price.ToString().Replace(",", ".") + ", '" + det.DateStart.ToString("yyyyMMdd") + "', '" + det.DateFinish.ToString("yyyyMMdd") + "')";
@@ -84,7 +68,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.ServicePriceDynamic.Details det)
+        public void Update(ServicePriceDynamicDetails det)
         {
             ZFort.DB.Execute.ExecuteString_void("UPDATE ServicePriceDynamic SET [ServiceId] = " + det.ServiceId.ToString() + " WHERE [Id] = " + det.Id.ToString());
 
@@ -99,7 +83,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("DELETE FROM ServicePriceDynamic WHERE [Id] = " + id.ToString());
         }
@@ -108,11 +92,11 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.ServicePriceDynamic.Details GetDetails(int id)
+        public ServicePriceDynamicDetails GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM ServicePriceDynamic WHERE [Id] = " + id.ToString());
 
-            DBLayer.ServicePriceDynamic.Details det = new Details();
+            ServicePriceDynamicDetails det = new ServicePriceDynamicDetails();
 
             if (!dr.IsNull("Id"))
                 det.Id = Convert.ToInt32(dr["Id"]);

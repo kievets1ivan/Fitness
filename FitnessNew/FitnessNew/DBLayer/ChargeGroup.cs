@@ -4,31 +4,18 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class ChargeGroup
+    public class ChargeGroup :
+        IInsertable<ChargeGroupDetails>,
+        IUpdatable<ChargeGroupDetails>,
+        IGettableDetailsById<ChargeGroupDetails>,
+        IDeletable
     {
-        #region Details
-
-        public class Details
-        {
-            #region Constructor
-
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public string Name = "";
-            public bool IsPrimary = false;
-
-            #endregion
-        }
-
-        #endregion
+        ChargeGroupDetails det = new ChargeGroupDetails();
 
         #region Get List
 
@@ -69,7 +56,7 @@ namespace FitnessProject.DBLayer
 
         #region Insert
 
-        public static void Insert(DBLayer.ChargeGroup.Details det)
+        public void Insert(ChargeGroupDetails det)
         {
             ZFort.DB.Execute.ExecuteString_void("INSERT INTO ChargeGroup ([Name], IsPrimary) VALUES ('" + det.Name + "', 0)");
         }
@@ -78,7 +65,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.ChargeGroup.Details det)
+        public void Update(ChargeGroupDetails det)
         {
             ZFort.DB.Execute.ExecuteString_void("UPDATE ChargeGroup SET [Name] = '" + det.Name + "' WHERE [Id] = " + det.Id.ToString());
         }
@@ -87,7 +74,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("DELETE FROM ChargeGroup WHERE [Id] = " + id.ToString());
         }
@@ -96,11 +83,11 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.ChargeGroup.Details GetDetails(int id)
+        public ChargeGroupDetails GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM ChargeGroup WHERE [Id] = " + id.ToString());
 
-            DBLayer.ChargeGroup.Details det = new Details();
+            ChargeGroupDetails det = new ChargeGroupDetails();
 
             if (!dr.IsNull("Id"))
                 det.Id = Convert.ToInt32(dr["Id"]);

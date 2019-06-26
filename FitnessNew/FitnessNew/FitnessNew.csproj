@@ -46,6 +46,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBLayer\AbonementIncome.cs" />
+    <Compile Include="DBLayer\AbonementPriceDynamic.cs" />
+    <Compile Include="DBLayer\Abonements.cs" />
+    <Compile Include="DBLayer\Administrators.cs" />
+    <Compile Include="DBLayer\AdvertisingSource.cs" />
+    <Compile Include="DBLayer\ArrivalDetails.cs" />
+    <Compile Include="DBLayer\Arrivals.cs" />
+    <Compile Include="DBLayer\Barcodes.cs" />
+    <Compile Include="DBLayer\Boxes.cs" />
+    <Compile Include="DBLayer\ChargeGroup.cs" />
+    <Compile Include="DBLayer\Charges.cs" />
+    <Compile Include="DBLayer\Clients.cs" />
+    <Compile Include="DBLayer\ClientsAbonements.cs" />
+    <Compile Include="DBLayer\ClientTypes.cs" />
+    <Compile Include="DBLayer\Coaches.cs" />
+    <Compile Include="DBLayer\CoachesAbonements.cs" />
+    <Compile Include="DBLayer\DeletingLog.cs" />
+    <Compile Include="DBLayer\Dimensions.cs" />
+    <Compile Include="DBLayer\DocumentType.cs" />
+    <Compile Include="DBLayer\Inquiries.cs" />
+    <Compile Include="DBLayer\ProductGroup.cs" />
+    <Compile Include="DBLayer\ProductPriceDynamic.cs" />
+    <Compile Include="DBLayer\Products.cs" />
+    <Compile Include="DBLayer\Sales.cs" />
+    <Compile Include="DBLayer\ServicePriceDynamic.cs" />
+    <Compile Include="DBLayer\Services.cs" />
+    <Compile Include="DBLayer\ServiceSales.cs" />
+    <Compile Include="DBLayer\Suppliers.cs" />
+    <Compile Include="DBLayer\UserAdministrator.cs" />
+    <Compile Include="DBLayer\UserRate.cs" />
+    <Compile Include="DBLayer\Users.cs" />
+    <Compile Include="DBLayer\UserVisits.cs" />
+    <Compile Include="DBLayer\Visits.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,6 +108,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Library.Data\Library.Data.csproj">
+      <Project>{9d7d5868-92f5-435e-8b3e-72c3d5b9c041}</Project>
+      <Name>Library.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Library.Logic\Library.Logic.csproj">
+      <Project>{245dd699-a2ef-4dcb-9bb9-9fca6d75c72b}</Project>
+      <Name>Library.Logic</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

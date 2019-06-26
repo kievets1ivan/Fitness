@@ -4,30 +4,18 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class Dimensions
+    public class Dimensions :
+        IInsertable<DetailsWithName>,
+        IUpdatable<DetailsWithName>,
+        IGettableDetailsById<DetailsWithName>,
+        IDeletable
     {
-        #region Details
-
-        public class Details
-        {
-            #region Constructor
-
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public string Name = "";
-
-            #endregion
-        }
-
-        #endregion
+        DetailsWithName det = new DetailsWithName();
 
         #region Get List
 
@@ -68,7 +56,7 @@ namespace FitnessProject.DBLayer
 
         #region Insert
 
-        public static void Insert(DBLayer.Dimensions.Details det)
+        public void Insert(DetailsWithName det)
         {
             ZFort.DB.Execute.ExecuteString_void("INSERT INTO Dimensions ([Name]) VALUES ('" + det.Name + "')");
         }
@@ -77,7 +65,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.Dimensions.Details det)
+        public void Update(DetailsWithName det)
         {
             ZFort.DB.Execute.ExecuteString_void("UPDATE Dimensions SET [Name] = '" + det.Name + "' WHERE [Id] = " + det.Id.ToString());
         }
@@ -86,7 +74,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("DELETE FROM Dimensions WHERE [Id] = " + id.ToString());
         }
@@ -95,11 +83,11 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.Dimensions.Details GetDetails(int id)
+        public DetailsWithName GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM Dimensions WHERE [Id] = " + id.ToString());
 
-            DBLayer.Dimensions.Details det = new Details();
+            DetailsWithName det = new DetailsWithName();
 
             if (!dr.IsNull("Id"))
                 det.Id = Convert.ToInt32(dr["Id"]);

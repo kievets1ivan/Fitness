@@ -4,88 +4,18 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class Abonements
+    public class Abonements :
+        IInsertable<AbonementsDetails>,
+        IUpdatable<AbonementsDetails>,
+        IGettableDetailsById<AbonementsDetails>,
+        IDeletable
     {
-        #region Details
-
-        public class Details
-        {
-            #region Constructor
-
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public string Name = "";
-            public double Length = 0;
-            public double Cost = 0;
-
-            public int AbonementGroup = 0;
-            public int LessonsCount = 0;
-
-            public bool IsSingle = false;
-
-            public int AbonementType = 0;
-
-            public bool IsUnlim = false;
-            public bool IsSpecial = false;
-            public int CoachId = 0;
-            public string Time = string.Empty;
-
-            public string Weekdays = string.Empty;
-
-            public int AdditionalVisits = 0;
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Details
-
-        public class WideDetails
-        {
-            #region Constructor
-
-            public WideDetails() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public string Name = "";
-            public double Length = 0;
-            public double Cost = 0;
-
-            public int AbonementGroup = 0;
-            public int LessonsCount = 0;
-
-            public bool IsSingle = false;
-
-            public int AbonementType = 0;
-
-            public bool IsUnlim = false;
-            public bool IsSpecial = false;
-            public int CoachId = 0;
-            public string Time = string.Empty;
-
-            public string CoachName = string.Empty;
-
-            public string Weekdays = string.Empty;
-
-            public int AdditionalVisits = 0;
-
-            #endregion
-        }
-
-        #endregion
+        AbonementsDetails det = new AbonementsDetails();
 
         #region Get List
 
@@ -163,7 +93,7 @@ namespace FitnessProject.DBLayer
 
         #region Insert
 
-        public static int Insert(DBLayer.Abonements.Details det)
+        public int Insert(AbonementsDetails det)
         {
             ZFort.DB.Execute.ExecuteString_void("INSERT INTO Abonements ([Name], [Length], [Cost], AbonementGroup, LessonsCount, IsSingle, IsUnlim, [Time], CoachId, Weekdays, AdditionalVisits, IsSpecial, IsDeleted) VALUES ('" + det.Name + "', " + det.Length.ToString().Replace(",", ".") + ", " + det.Cost.ToString().Replace(",", ".") + ", " + det.AbonementGroup.ToString() + ", " + det.LessonsCount.ToString() + ", " + Convert.ToInt32(det.IsSingle).ToString() + ", " + Convert.ToInt32(det.IsUnlim).ToString() + ", '" + det.Time + "', " + det.CoachId.ToString() + ", '" + det.Weekdays + "', " + det.AdditionalVisits.ToString() + ", " + Convert.ToInt32(det.IsSpecial).ToString() + ", 0)");
 
@@ -174,7 +104,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.Abonements.Details det)
+        public void Update(AbonementsDetails det)
         {
             ZFort.DB.Execute.ExecuteString_void("UPDATE Abonements SET [Name] = '" + det.Name + "' WHERE [Id] = " + det.Id.ToString());
 
@@ -205,7 +135,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("UPDATE Abonements SET IsDeleted = 1 WHERE [Id] = " + id.ToString());
         }
@@ -214,11 +144,11 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.Abonements.Details GetDetails(int id)
+        public AbonementsDetails GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM Abonements WHERE [Id] = " + id.ToString());
 
-            DBLayer.Abonements.Details det = new Details();
+            AbonementsDetails det = new AbonementsDetails();
 
             if (!dr.IsNull("Id"))
                 det.Id = Convert.ToInt32(dr["Id"]);
@@ -263,7 +193,7 @@ namespace FitnessProject.DBLayer
 
         #region GetClientLast by Id
 
-        public static DBLayer.Abonements.Details GetClientLast(int id)
+        public static AbonementsDetails GetClientLast(int id)
         {
             string sql = "SELECT a.* FROM Abonements AS a INNER JOIN ClientsAbonements AS ca ON ca.AbonementId = a.[Id] ";
             //sql += " INNER JOIN Clients AS c ON c.[Id] = ca.ClientId WHERE c.[Id] = " + id.ToString() + " AND GETDATE() BETWEEN ca.DateStart AND DATEADD(day, 1, ca.DateFinish) AND DateFinish = (SELECT Max(DateFinish) FROm ClientsAbonements WHERE CLientId = " + id.ToString() + ")";
@@ -271,7 +201,7 @@ namespace FitnessProject.DBLayer
 
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow(sql);
 
-            DBLayer.Abonements.Details det = new Details();
+            AbonementsDetails det = new AbonementsDetails();
 
             if (!dr.IsNull("Id"))
                 det.Id = Convert.ToInt32(dr["Id"]);

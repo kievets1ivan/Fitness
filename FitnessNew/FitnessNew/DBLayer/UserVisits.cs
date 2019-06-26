@@ -4,58 +4,18 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class UserVisits
+    public class UserVisits :
+        IInsertable<UserVisitsWideDetails>,
+        IUpdatable<UserVisitsWideDetails>,
+        IGettableDetailsById<UserVisitsWideDetails>,
+        IDeletable
     {
-        #region Details
-
-        public class UserVisits_Details
-        {
-            #region Constructor
-
-            public UserVisits_Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int UserId = 0;
-            public DateTime Date = DateTime.MinValue;
-            public string TimeOn = "";
-            public string TimeOff = "";
-
-            #endregion
-        }
-
-        #endregion
-
-        #region UserVisits_WideDetails
-
-        public class UserVisits_WideDetails
-        {
-            #region Constructor
-
-            public UserVisits_WideDetails() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int UserId = 0;
-            public DateTime Date = DateTime.MinValue;
-            public string TimeOn = "";
-            public string TimeOff = "";
-
-            public string UserFIO = "";
-
-            #endregion
-        }
-
-        #endregion
+        UserVisitsWideDetails det = new UserVisitsWideDetails();
 
         #region Get List
 
@@ -129,7 +89,7 @@ namespace FitnessProject.DBLayer
        
         #region Insert
 
-        public static void Insert(DBLayer.UserVisits.UserVisits_Details det)
+        public void Insert(UserVisitsWideDetails det)
         {
             string sql = "INSERT INTO UserVisits (UserId, [Date], [TimeOn], [TimeOff]) ";
             sql += " VALUES (" + det.UserId.ToString() + ", '" + det.Date.Date.ToString("yyyyMMdd") + "', '" + det.TimeOn + "', '" + det.TimeOff + "')";
@@ -141,7 +101,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.UserVisits.UserVisits_Details det)
+        public void Update(UserVisitsWideDetails det)
         {
             ZFort.DB.Execute.ExecuteString_void("UPDATE UserVisits SET [UserId] = " + det.UserId.ToString() + " WHERE [Id] = " + det.Id.ToString());
 
@@ -156,7 +116,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("DELETE FROM UserVisits WHERE [Id] = " + id.ToString());
         }
@@ -165,11 +125,11 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.UserVisits.UserVisits_Details GetDetails(int id)
+        public UserVisitsWideDetails GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM UserVisits WHERE [Id] = " + id.ToString());
 
-            DBLayer.UserVisits.UserVisits_Details det = new UserVisits_Details();
+            UserVisitsWideDetails det = new UserVisitsWideDetails();
 
             if (!dr.IsNull("Id"))
                 det.Id = Convert.ToInt32(dr["Id"]);

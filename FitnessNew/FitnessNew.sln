@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessNew", "FitnessNew\Fi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Data", "Library.Data\Library.Data.csproj", "{9D7D5868-92F5-435E-8B3E-72C3D5B9C041}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Logic", "Library.Logic\Library.Logic.csproj", "{245DD699-A2EF-4DCB-9BB9-9FCA6D75C72B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9D7D5868-92F5-435E-8B3E-72C3D5B9C041}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D7D5868-92F5-435E-8B3E-72C3D5B9C041}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D7D5868-92F5-435E-8B3E-72C3D5B9C041}.Release|Any CPU.Build.0 = Release|Any CPU
+		{245DD699-A2EF-4DCB-9BB9-9FCA6D75C72B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{245DD699-A2EF-4DCB-9BB9-9FCA6D75C72B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{245DD699-A2EF-4DCB-9BB9-9FCA6D75C72B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{245DD699-A2EF-4DCB-9BB9-9FCA6D75C72B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

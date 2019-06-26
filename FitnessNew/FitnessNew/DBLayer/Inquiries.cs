@@ -4,58 +4,18 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class Inquiries
+    public class Inquiries :
+        IInsertable<InquiriesWideDetails>,
+        IUpdatable<InquiriesWideDetails>,
+        IGettableDetailsById<InquiriesWideDetails>,
+        IDeletable
     {
-        #region Details
-
-        public class Details
-        {
-            #region Constructor
-
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public string Number = "";
-            public int SupplierId = 0;
-            public DateTime Date = DateTime.MinValue;
-            public int State = 0;
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Details
-
-        public class Inquiries_WideDetails
-        {
-            #region Constructor
-
-            public Inquiries_WideDetails() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public string Number = "";
-            public int SupplierId = 0;
-            public DateTime Date = DateTime.MinValue;
-            public int State = 0;
-
-            public string Supplier = "";
-
-            #endregion
-        }
-
-        #endregion
+        InquiriesWideDetails det = new InquiriesWideDetails();
 
         #region Get List
 
@@ -100,7 +60,7 @@ namespace FitnessProject.DBLayer
 
         #region Insert
 
-        public static void Insert(DBLayer.Inquiries.Details det1)
+        public void Insert(InquiriesWideDetails det1)
         {
             Database.Service1 serv = new FitnessProject.Database.Service1();
 
@@ -123,7 +83,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.Inquiries.Details det1)
+        public void Update(InquiriesWideDetails det1)
         {
 
             Database.Service1 serv = new FitnessProject.Database.Service1();
@@ -147,7 +107,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             Database.Service1 serv = new FitnessProject.Database.Service1();
 
@@ -158,13 +118,13 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.Inquiries.Details GetDetails(int id)
+        public InquiriesWideDetails GetDetailsById(int id)
         {            
             Database.Service1 serv = new FitnessProject.Database.Service1();
 
             Database.Inquiries_Details det1 = serv.Inquiries_GetDetails(id);
 
-            DBLayer.Inquiries.Details det = new Details();
+            InquiriesWideDetails det = new InquiriesWideDetails();
 
             det.Date = det1.Date;
 

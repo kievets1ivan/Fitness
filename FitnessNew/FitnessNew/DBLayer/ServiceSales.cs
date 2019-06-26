@@ -4,77 +4,18 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class ServiceSales
+    public class ServiceSales :
+        IInsertable<ServiceSalesWideDetails>,
+        IUpdatable<ServiceSalesWideDetails>,
+        IGettableDetailsById<ServiceSalesWideDetails>,
+        IDeletable
     {
-        #region Details
-
-        public class Details
-        {
-            #region Constructor
-
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int ServiceId = 0;
-            public int UserId = 0;
-            public DateTime Date = DateTime.MinValue;
-            public string Time = "";
-            public int Quantity = 0;
-
-            public bool IsDeleted = false;
-            public DateTime DeleteDate = DateTime.MinValue;
-            public string DeleteReason = "";
-
-            #endregion
-        }
-
-        #endregion
-
-        #region WideDetails
-
-        public class ServiceSales_WideDetails
-        {
-            #region Constructor
-
-            public ServiceSales_WideDetails() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int ServiceId = 0;
-            public string ServiceName = "";
-
-            public int UserId = 0;
-            public string UserName = "";
-
-            public DateTime Date = DateTime.MinValue;
-            public string Time = "";
-            public int Quantity = 0;
-
-            public int DimensionId = 0;
-            public string DimensionName = "";
-
-            public double Cost = 0;
-
-            public bool IsDeleted = false;
-            public DateTime DeleteDate = DateTime.MinValue;
-            public string DeleteReason = "";
-
-            public int Type = 0;
-
-            #endregion
-        }
-
-        #endregion
+        ServiceSalesWideDetails det = new ServiceSalesWideDetails();
 
         #region Get List
 
@@ -148,7 +89,7 @@ namespace FitnessProject.DBLayer
 
         #region Insert
 
-        public static void Insert(DBLayer.ServiceSales.Details det)
+        public void Insert(ServiceSalesWideDetails det)
         {
             string sql = "INSERT INTO ServiceSales (ServiceId, UserId, [Date], [Time], [Quantity], IsDeleted) ";
             sql += " VALUES (" + det.ServiceId.ToString() + ", " + det.UserId.ToString() + ", '" + det.Date.ToString("yyyyMMdd") + "', '" + det.Time + "', " + det.Quantity.ToString() + ", 0)";
@@ -160,7 +101,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.ServiceSales.Details det)
+        public void Update(ServiceSalesWideDetails det)
         {
 
             ZFort.DB.Execute.ExecuteString_void("UPDATE ServiceSales SET [ServiceId] = " + det.ServiceId.ToString() + " WHERE [Id] = " + det.Id.ToString());
@@ -178,7 +119,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("DELETE FROM ServiceSales WHERE [Id] = " + id.ToString());
         }
@@ -187,11 +128,11 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.ServiceSales.Details GetDetails(int id)
+        public ServiceSalesWideDetails GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM ServiceSales WHERE [Id] = " + id.ToString());
 
-            DBLayer.ServiceSales.Details det = new Details();
+            ServiceSalesWideDetails det = new ServiceSalesWideDetails();
 
             if (!dr.IsNull("Id"))
                 det.Id = Convert.ToInt32(dr["Id"]);

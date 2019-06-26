@@ -4,34 +4,18 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class Suppliers
+    public class Suppliers :
+        IInsertable<SuppliersDetails>,
+        IUpdatable<SuppliersDetails>,
+        IGettableDetailsById<SuppliersDetails>,
+        IDeletable
     {
-        #region Details
-
-        public class Details
-        {
-            #region Constructor
-
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int Type = 0;
-            public string Name = "";
-            public string Director = "";
-            public string Phone = "";
-            public string Fax = "";
-
-            #endregion
-        }
-
-        #endregion
+        SuppliersDetails det = new SuppliersDetails();
 
         #region Get List
 
@@ -84,7 +68,7 @@ namespace FitnessProject.DBLayer
 
         #region Insert
 
-        public static void Insert(DBLayer.Suppliers.Details det)
+        public void Insert(SuppliersDetails det)
         {
             ZFort.DB.Execute.ExecuteString_void("INSERT INTO Suppliers ([Type], [Name], Director, Phone, Fax) VALUES (" + det.Type.ToString() + ", '" + det.Name + "', '" + det.Director + "', '" + det.Phone + "', '" + det.Fax + "')");
         }
@@ -93,7 +77,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.Suppliers.Details det)
+        public void Update(SuppliersDetails det)
         {
             ZFort.DB.Execute.ExecuteString_void("UPDATE Suppliers SET [Name] = '" + det.Name + "' WHERE [Id] = " + det.Id.ToString());
 
@@ -110,7 +94,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("DELETE FROM Suppliers WHERE [Id] = " + id.ToString());
         }
@@ -119,11 +103,11 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.Suppliers.Details GetDetails(int id)
+        public SuppliersDetails GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM Suppliers WHERE [Id] = " + id.ToString());
 
-            DBLayer.Suppliers.Details det = new Details();
+            SuppliersDetails det = new SuppliersDetails();
 
             if (!dr.IsNull("Id"))
                 det.Id = Convert.ToInt32(dr["Id"]);

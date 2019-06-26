@@ -4,36 +4,18 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class UserRate
+    public class UserRate :
+        IInsertable<UserRateDetails>,
+        IUpdatable<UserRateDetails>,
+        IGettableDetailsById<UserRateDetails>,
+        IDeletable
     {
-        #region Details
-
-        public class Details
-        {
-            #region Constructor
-
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int UserId = 0;
-            public double Constant = 0;
-            public double PercentForClients = 0;
-            public double PercentForSales = 0;
-            public double PercentForService = 0;
-            public double PercentForFitness = 0;
-            public double PercentForMassage = 0;
-
-            #endregion
-        }
-
-        #endregion        
+        UserRateDetails det = new UserRateDetails();
 
         #region Get List
 
@@ -75,7 +57,7 @@ namespace FitnessProject.DBLayer
         
         #region Insert
 
-        public static void Insert(DBLayer.UserRate.Details det)
+        public void Insert(UserRateDetails det)
         {
             string sql = "INSERT INTO UserRate (UserId, Constant, PercentForClients, PercentForSales, PercentForService, PercentForFitness, PercentForMassage) ";
             sql += " VALUES (" + det.UserId.ToString() + ", " + det.Constant.ToString() + ", " + det.PercentForClients.ToString().Replace(",", ".") + ", " + det.PercentForSales.ToString().Replace(",", ".") + ", " + det.PercentForService.ToString().Replace(",", ".") + ", " + det.PercentForFitness.ToString().Replace(",", ".") + ", " + det.PercentForMassage.ToString().Replace(",", ".") + ")";
@@ -87,7 +69,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.UserRate.Details det)
+        public void Update(UserRateDetails det)
         {
             ZFort.DB.Execute.ExecuteString_void("UPDATE UserRate SET [UserId] = " + det.UserId.ToString() + " WHERE [Id] = " + det.Id.ToString());
 
@@ -108,7 +90,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("DELETE FROM UserRate WHERE [Id] = " + id.ToString());
         }
@@ -117,11 +99,11 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.UserRate.Details GetDetails(int id)
+        public UserRateDetails GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM UserRate WHERE [UserId] = " + id.ToString());
 
-            DBLayer.UserRate.Details det = new Details();
+            UserRateDetails det = new UserRateDetails();
 
             if (!dr.IsNull("Id"))
                 det.Id = Convert.ToInt32(dr["Id"]);

@@ -4,81 +4,19 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using Library.Data;
+using Library.Logic;
 
 namespace FitnessProject.DBLayer
 {
-    public class AbonementIncome
+    public class AbonementIncome : 
+        IInsertable<AbonementIncomeWideDetails>, 
+        IUpdatable<AbonementIncomeWideDetails>, 
+        IGettableDetailsById<AbonementIncomeWideDetails>,
+        IDeletable
     {
-        #region Details
 
-        public class Details
-        {
-            #region Constructor
-
-            public Details() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int ClientId = 0;
-            public int AbonementId = 0;
-            public int UserId = 0;
-            public DateTime Date = DateTime.MinValue;
-            public double Summ = 0;
-
-            public bool IsDeleted = false;
-            public DateTime DeleteDate = DateTime.MinValue;
-            public string DeleteReason = "";
-
-            public int ClientAbonementId = 0;
-
-            #endregion
-        }
-
-        #endregion
-
-        #region WideDetails
-
-        public class AbonementIncome_WideDetails
-        {
-            #region Constructor
-
-            public AbonementIncome_WideDetails() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Id = 0;
-            public int ClientId = 0;
-            public int AbonementId = 0;
-            public int UserId = 0;
-            public DateTime Date = DateTime.MinValue;
-            public double Summ = 0;
-
-            public bool IsDeleted = false;
-            public DateTime DeleteDate = DateTime.MinValue;
-            public string DeleteReason = "";
-
-            public string AbonementName = "";
-            public string FIO = "";
-            public string User = "";
-
-            public string CoachName = "";
-            public string Weekday = "";
-            public string Time = "";
-
-
-            public int AbonementGroup = 0;
-
-            public int ClientAbonementId = 0;
-
-            #endregion
-        }
-
-        #endregion
+        AbonementIncomeWideDetails det = new AbonementIncomeWideDetails();
 
         #region ReportDetails
 
@@ -310,7 +248,7 @@ namespace FitnessProject.DBLayer
 
         #region Insert
 
-        public static void Insert(DBLayer.AbonementIncome.Details det)
+        public void Insert(AbonementIncomeWideDetails det)
         {
             string sql = "INSERT INTO AbonementIncome (ClientId, AbonementId, UserId, [Date], Summ, IsDeleted, ClientAbonementId) ";
             sql += " VALUES (" + det.ClientId.ToString() + ", " + det.AbonementId.ToString() + ", " + det.UserId.ToString() + ", '" + det.Date.ToString("yyyyMMdd") + "', " + det.Summ.ToString().Replace(",", ".") + ", 0, " + det.ClientAbonementId.ToString() + ")";
@@ -322,7 +260,7 @@ namespace FitnessProject.DBLayer
 
         #region Update
 
-        public static void Update(DBLayer.AbonementIncome.Details det)
+        public void Update(AbonementIncomeWideDetails det)
         {
             ZFort.DB.Execute.ExecuteString_void("UPDATE AbonementIncome SET [ClientId] = " + det.ClientId.ToString() + " WHERE [Id] = " + det.Id.ToString());
 
@@ -341,7 +279,7 @@ namespace FitnessProject.DBLayer
 
         #region Delete
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
             ZFort.DB.Execute.ExecuteString_void("DELETE FROM AbonementIncome WHERE [Id] = " + id.ToString());
         }
@@ -372,7 +310,7 @@ namespace FitnessProject.DBLayer
 
         #region GetDetails by Id
 
-        public static DBLayer.AbonementIncome.Details GetDetails(int id)
+        public AbonementIncomeWideDetails GetDetailsById(int id)
         {
             DataRow dr = ZFort.DB.Execute.ExecuteString_DataRow("SELECT * FROM AbonementIncome WHERE [Id] = " + id.ToString());
 
