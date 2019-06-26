@@ -18,91 +18,11 @@ namespace FitnessProject.DBLayer
 
         AbonementIncomeWideDetails det = new AbonementIncomeWideDetails();
 
-        #region ReportDetails
+        MoneyReportDetails moneyDet = new MoneyReportDetails();
 
-        public class Money_ReportDetails
-        {
-            #region Constructor
+        FinincialDetails finincialDet = new FinincialDetails();
 
-            public Money_ReportDetails() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Type = 0;
-            public DateTime Date = DateTime.MinValue;
-            public string Time = "";
-            public double Summ = 0;
-            public string UserName = "";
-            public string Name = "";
-            public int Quantity = 0;
-            public double Price = 0;
-            public string DimensionName = "";
-
-            public string GroupName = "";
-
-            public bool IsDeleted = false;
-            public DateTime DeleteDate = DateTime.MinValue;
-            public string DeleteReason = "";
-
-            public string AbonementName = "";
-
-            public string ChargeGroupName = "";
-
-            public int AbonementGroup = 0;
-
-            #endregion
-        }
-
-        #endregion
-
-        #region FinancialDetails
-
-        public class FinincialDetails
-        {
-            public DateTime Date { get; set; }
-            public double Value { get; set; }
-        }
-
-        #endregion
-
-        #region UserIncome_ReportDetails
-
-        public class UserIncome_ReportDetails
-        {
-            #region Constructor
-
-            public UserIncome_ReportDetails() { }
-
-            #endregion
-
-            #region Fields
-
-            public int Type = 0;
-            public DateTime Date = DateTime.MinValue;
-            public string Time = "";
-            public double Summ = 0;
-            public string UserName = "";
-            public string Name = "";
-            public int Quantity = 0;
-            public double Price = 0;
-            public string DimensionName = "";
-
-            public string GroupName = "";
-
-            public bool IsDeleted = false;
-            public DateTime DeleteDate = DateTime.MinValue;
-            public string DeleteReason = "";
-
-            public double ClientsSumm = 0;
-            public double ServiceSumm = 0;
-            public double SalesSumm = 0;
-
-            #endregion
-        }
-
-        #endregion
+        UserIncomeReportDetails userIncomeReportDet = new UserIncomeReportDetails();
 
         #region Get List
 
